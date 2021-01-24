@@ -2,6 +2,7 @@ package org.dynmap.worldguard;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -51,6 +52,7 @@ public class DynmapWorldGuardPlugin extends JavaPlugin {
     MarkerAPI markerapi;
     BooleanFlag boost_flag;
     int updatesPerTick = 20;
+    RegionComparator comparator = new RegionComparator();
 
     FileConfiguration cfg;
     MarkerSet set;
@@ -329,6 +331,8 @@ public class DynmapWorldGuardPlugin extends JavaPlugin {
                         Map<String,ProtectedRegion> regions = rm.getRegions();  /* Get all the regions */
                         if ((regions != null) && (regions.isEmpty() == false)) {
                             regionsToDo = new ArrayList<ProtectedRegion>(regions.values());
+                            // Sort by priority so lower priority regions will be below higher ones
+                            Collections.sort(regionsToDo, comparator);
                         }
                     }
                 }
